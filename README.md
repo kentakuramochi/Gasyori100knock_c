@@ -12,6 +12,8 @@ WSL Ubuntu 18.04.5 LTS
 
 ## Prerequesites
 
+- CMake 3.10.2
+
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
 
     PNG画像の読み込み。`apt`で導入可能

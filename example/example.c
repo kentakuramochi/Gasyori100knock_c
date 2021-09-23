@@ -2,10 +2,17 @@
 
 #include "imgdata.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
+    // get 1st argument as file name of PNG image
+    if (argc < 2)
+    {
+        printf("[error] specify PNG image file\n");
+        return -1;
+    }
+
     // read PNG image as Imgdata structure
-    Imgdata *img = Imgdata_read_png("../dataset/images/imori_256x256.png");
+    Imgdata *img = Imgdata_read_png(argv[1]);
     if (img == NULL)
     {
         return -1;
