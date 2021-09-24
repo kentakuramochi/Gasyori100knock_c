@@ -6,28 +6,28 @@
 
 // image data strucute
 typedef struct {
-    int width;
-    int height;
-    int channel;
+    int     width;
+    int     height;
+    int     channel;
     uint8_t *data;
 } Imgdata;
 
 // get reference of pixel data at (x,y)
-static inline uint8_t *Imgdata_at(Imgdata *img, int x, int y)
+static inline uint8_t *Imgdata_at(Imgdata *img, const int x, const int y)
 {
     return (img->data + y * img->width * img->channel + x * img->channel);
 }
 
-// allocate Imgdata
+// allocate Imgdata with specified size
 Imgdata *Imgdata_alloc(const int width, const int height, const int channel);
 
 // free Imgdata
 void Imgdata_free(Imgdata *img);
 
-// input PNG image as Imgdata
+// read PNG image file as Imgdata
 Imgdata *Imgdata_read_png(const char *filename);
 
-// output Imgdata as PNG image
+// write Imgdata as PNG image file
 bool Imgdata_write_png(const Imgdata *img, const char *filename);
 
 #endif // IMGDATA_H
