@@ -1,4 +1,4 @@
-add_executable(example example.c)
+add_executable(example EXCLUDE_FROM_ALL example.c)
 
 target_include_directories(example PRIVATE ${PROJECT_SOURCE_DIR}/include)
 

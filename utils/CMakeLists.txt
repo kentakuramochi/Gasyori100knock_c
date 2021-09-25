@@ -1,4 +1,4 @@
-add_library(imgdata STATIC imgdata.c)
+add_library(imgdata EXCLUDE_FROM_ALL SHARED imgdata.c)
 
 target_include_directories(imgdata PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
