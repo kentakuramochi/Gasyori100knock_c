@@ -12,6 +12,13 @@ typedef struct {
     uint8_t *data;
 } Imgdata;
 
+// num of color channels
+typedef enum {
+    IMGDATA_COLOR_GRAY  = 1,
+    IMGDATA_COLOR_RGB   = 3,
+    IMGDATA_COLOR_RGBA  = 4 
+} IMGDATA_COLOR;
+
 // get reference of pixel data at (x,y)
 static inline uint8_t *Imgdata_at(Imgdata *img, const int x, const int y)
 {

@@ -99,9 +99,22 @@ Imgdata *Imgdata_read_png(const char *filename)
 
     // check color type
     png_byte type = png_get_color_type(png_ptr, info_ptr);
-    if ((type != PNG_COLOR_TYPE_RGB) && (type != PNG_COLOR_TYPE_RGB_ALPHA))
+    int channel;
+    if (type == PNG_COLOR_TYPE_GRAY)
     {
-        printf("[error] support RGB/RGBA format only\n");
+        channel = 1;
+    }
+    else if (type == PNG_COLOR_TYPE_RGB)
+    {
+        channel = 3;
+    }
+    else if (type == PNG_COLOR_TYPE_RGB_ALPHA)
+    {
+        channel = 4;
+    }
+    else
+    {
+        printf("[error] invalid color type: support GRAY/RGB/RGB_ALPHA only\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         fclose(fp);
         return NULL;
@@ -110,8 +123,6 @@ Imgdata *Imgdata_read_png(const char *filename)
     // allocate Imgdata
     int width   = png_get_image_width(png_ptr, info_ptr);
     int height  = png_get_image_height(png_ptr, info_ptr);
-    int channel = (type == PNG_COLOR_TYPE_RGB) ? 3 :
-                  4; // PNG_COLOR_TYPE_RGB_ALPHA
 
     Imgdata *img = Imgdata_alloc(width, height, channel);
     if (img == NULL)
@@ -161,7 +172,11 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     }
 
     png_byte type;
-    if (img->channel == 3)
+    if (img->channel == 1)
+    {
+        type = PNG_COLOR_TYPE_GRAY;
+    }
+    else if (img->channel == 3)
     {
         type = PNG_COLOR_TYPE_RGB;
     }
@@ -171,7 +186,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     }
     else
     {
-        printf("[error] invalid channel num=%d", img->channel);
+        printf("[error] invalid channel num=%d, support 1(GRAY)/3(RGB)/4(RGB_ALPHA) only", img->channel);
         png_destroy_write_struct(&png_ptr, &info_ptr);
         fclose(fp);
         return false;
