@@ -7,3 +7,4 @@ set(CMAKE_CFLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall -Wextra -Wpedantic")
 
 add_subdirectory(example)
 add_subdirectory(utils)
+add_subdirectory(questions)
