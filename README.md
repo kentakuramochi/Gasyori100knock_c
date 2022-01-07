@@ -16,8 +16,8 @@ WSL Ubuntu 18.04.5 LTS
 
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
 
-    PNG画像の読み込みに使用。
-    [sourceforge](https://sourceforge.net/projects/libpng/files/)から取得したソースコードのビルドほか、`apt`でライブラリのインストールが可能
+    PNG画像の読み込みに使用
+    [sourceforge](https://sourceforge.net/projects/libpng/files/)から取得したソースのビルドほか、`apt`でインストール可能
 
     ```bash
     $ sudo apt install libpng-dev
@@ -28,7 +28,7 @@ WSL Ubuntu 18.04.5 LTS
 
 ## Build
 
-デフォルトのビルドターゲットは`questions/*`以下各ソース（ライブラリが依存してビルドされる）
+デフォルトのビルドターゲットは`questions/`以下の各問題に対する回答（ライブラリは依存してビルドされる）
 
 ```sh
 # @project root
@@ -58,12 +58,12 @@ Scanning dependencies of target 001_rgb_to_bgr
 
 ## Image operation
 
-簡易的な画像データ構造とその操作をライブラリ`libimgdata`として作成
+簡易的な画像データ構造を扱うライブラリ`libimgdata`を作成
 (`include/imgdata.h`, `utils/imgdata.c`)
 
 ### Data structure
 
-画像データは`include/imgdata.h`中の`Imgdata`構造体で扱う
+画像データ構造体`Imgdata`
 （HWC形式、各色要素8bit、RGBオーダ）
 
 ```c
@@ -113,10 +113,16 @@ Imgdata *img = Imgdata_read_png("./input.png");
 Imgdata_write_png(img, "./output.png");
 ```
 
-サンプル（`example/example.c`）はターゲット`example`の指定でビルド可
+### Example
+
+｀example｀ターゲットの指定でサンプル（`example/example.c`）をビルド可能
 
 ```sh
 $ mkdir build
 $ cmake ..
 $ cmake --build . --target example
 ```
+
+## Question
+
+`questions/`以下に各問題に対する回答ソースを格納
