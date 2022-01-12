@@ -25,6 +25,9 @@ WSL Ubuntu 18.04.5 LTS
     $ apt-show-versions -p libpng-dev
     libpng-dev:amd64/bionic-security 1.6.34-1ubuntu0.18.04.2 uptodate
     ```
+## Setup
+
+スクリプト`setup.sh`によりサンプル画像をダウンロード
 
 ## Build
 
