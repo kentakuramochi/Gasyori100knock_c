@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# clone dataset
 get_dataset()
 {
     # get dataset from https://github.com/yoyoyo-yo/Gasyori100knock/ with "sparse checkout"
@@ -29,3 +30,4 @@ sudo apt update
 sudo apt install libpng-dev
 
 get_dataset
+
