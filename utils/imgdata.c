@@ -8,15 +8,13 @@
 
 Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
 {
-    if ((width <= 0) || (height <= 0) || (channel <= 0))
-    {
+    if ((width <= 0) || (height <= 0) || (channel <= 0)) {
         printf("[error] invalid image size\n");
         return NULL;
     }
 
     Imgdata *img = (Imgdata*)malloc(sizeof(Imgdata));
-    if (img == NULL)
-    {
+    if (img == NULL) {
         printf("[error] failed to allocate Imgdata\n");
         return NULL;
     }
@@ -26,8 +24,7 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
     img->channel = channel;
 
     img->data = (uint8_t*)malloc(sizeof(uint8_t) * width * height * channel);
-    if (img->data == NULL)
-    {
+    if (img->data == NULL) {
         printf("[error] failed to allocate Imgdata\n");
         free(img);
         img = NULL;
@@ -49,8 +46,7 @@ void Imgdata_free(Imgdata *img)
 Imgdata *Imgdata_read_png(const char *filename)
 {
     FILE *fp = fopen(filename, "rb");
-    if (!fp)
-    {
+    if (!fp) {
         printf("[error] faied to open file \"%s\"", filename);
         return NULL;
     }
@@ -58,24 +54,21 @@ Imgdata *Imgdata_read_png(const char *filename)
     // check PNG signature (first 8 Bytes)
     uint8_t signature[8];
     size_t read_size = fread(signature, 1, 8, fp);
-    if (png_sig_cmp(signature, 0, 8))
-    {
+    if (png_sig_cmp(signature, 0, 8)) {
         printf("[error] signature error: png_sig_cmp()\n");
         fclose(fp);
         return NULL;
     }
 
     png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (png_ptr == NULL)
-    {
+    if (png_ptr == NULL) {
         printf("[error] failed to create data structure: png_create_read_struct()\n");
         fclose(fp);
         return NULL;
     }
 
     png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (info_ptr == NULL)
-    {
+    if (info_ptr == NULL) {
         printf("[error] failed to create info structure: png_create_info_struct()\n");
         png_destroy_read_struct(&png_ptr, NULL, NULL);
         fclose(fp);
@@ -83,8 +76,7 @@ Imgdata *Imgdata_read_png(const char *filename)
     }
 
     png_infop end_info = png_create_info_struct(png_ptr);
-    if (end_info == NULL)
-    {
+    if (end_info == NULL) {
         printf("[error] failed to create info structure: png_create_info_struct()\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
         return NULL;
@@ -100,20 +92,13 @@ Imgdata *Imgdata_read_png(const char *filename)
     // check color type
     png_byte type = png_get_color_type(png_ptr, info_ptr);
     int channel;
-    if (type == PNG_COLOR_TYPE_GRAY)
-    {
+    if (type == PNG_COLOR_TYPE_GRAY) {
         channel = 1;
-    }
-    else if (type == PNG_COLOR_TYPE_RGB)
-    {
+    } else if (type == PNG_COLOR_TYPE_RGB) {
         channel = 3;
-    }
-    else if (type == PNG_COLOR_TYPE_RGB_ALPHA)
-    {
+    } else if (type == PNG_COLOR_TYPE_RGB_ALPHA) {
         channel = 4;
-    }
-    else
-    {
+    } else {
         printf("[error] invalid color type: support GRAY/RGB/RGB_ALPHA only\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         fclose(fp);
@@ -125,8 +110,7 @@ Imgdata *Imgdata_read_png(const char *filename)
     int height  = png_get_image_height(png_ptr, info_ptr);
 
     Imgdata *img = Imgdata_alloc(width, height, channel);
-    if (img == NULL)
-    {
+    if (img == NULL) {
         printf("[error] failed to allocate data\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
         fclose(fp);
@@ -135,8 +119,7 @@ Imgdata *Imgdata_read_png(const char *filename)
 
     // copy data per row
     png_bytepp datap = png_get_rows(png_ptr, info_ptr);
-    for (int i = 0; i < img->height; i++)
-    {
+    for (int i = 0; i < img->height; i++) {
         memcpy((img->data + i * img->width * img->channel), datap[i], img->width * img->channel);
     }
 
@@ -149,22 +132,19 @@ Imgdata *Imgdata_read_png(const char *filename)
 bool Imgdata_write_png(const Imgdata *img, const char *filename)
 {
     FILE *fp = fopen(filename, "wb");
-    if (fp == NULL)
-    {
+    if (fp == NULL) {
         return false;
     }
 
     png_structp png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (png_ptr == NULL)
-    {
+    if (png_ptr == NULL) {
         printf("[error] failed to create data structure: png_create_write_struct()\n");
         fclose(fp);
         return false;
     }
 
     png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (info_ptr == NULL)
-    {
+    if (info_ptr == NULL) {
         printf("[error] failed to create info structure: png_create_info_struct()\n");
         png_destroy_read_struct(&png_ptr, NULL, NULL);
         fclose(fp);
@@ -172,20 +152,13 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     }
 
     png_byte type;
-    if (img->channel == 1)
-    {
+    if (img->channel == 1) {
         type = PNG_COLOR_TYPE_GRAY;
-    }
-    else if (img->channel == 3)
-    {
+    } else if (img->channel == 3) {
         type = PNG_COLOR_TYPE_RGB;
-    }
-    else if (img->channel == 4)
-    {
+    } else if (img->channel == 4) {
         type = PNG_COLOR_TYPE_RGB_ALPHA;
-    }
-    else
-    {
+    } else {
         printf("[error] invalid channel num=%d, support 1(GRAY)/3(RGB)/4(RGB_ALPHA) only", img->channel);
         png_destroy_write_struct(&png_ptr, &info_ptr);
         fclose(fp);
@@ -202,8 +175,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     // copy data per row
     png_bytepp datap = png_malloc(png_ptr, sizeof(png_bytep) * img->height);
     png_set_rows(png_ptr, info_ptr, datap);
-    for (int i = 0; i < img->height; i++)
-    {
+    for (int i = 0; i < img->height; i++) {
         datap[i] = png_malloc(png_ptr, (img->width * img->channel));
         memcpy(datap[i], (img->data + i * img->width * img->channel), (img->width * img->channel));
     }
@@ -211,8 +183,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     // write data
     png_write_png(png_ptr, info_ptr, PNG_TRANSFORM_IDENTITY, NULL);
 
-    for (int i = 0; i < img->height; i++)
-    {
+    for (int i = 0; i < img->height; i++) {
         png_free(png_ptr, datap[i]);
     }
     png_free(png_ptr, datap);
@@ -222,3 +193,4 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
 
     return true;
 }
+

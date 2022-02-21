@@ -8,21 +8,17 @@ Imgdata *binarize_otsu(Imgdata *img)
     Imgdata *gray = Imgdata_alloc(img->width, img->height, 1);
     uint8_t min = 255;
     uint8_t max = 0;
-    for (int y = 0; y < img->height; y++)
-    {
-        for (int x = 0; x < img->width; x++)
-       {
+    for (int y = 0; y < img->height; y++) {
+        for (int x = 0; x < img->width; x++) {
             uint8_t r = Imgdata_at(img, x, y)[0];
             uint8_t g = Imgdata_at(img, x, y)[1];
             uint8_t b = Imgdata_at(img, x, y)[2];
             uint8_t i = (uint8_t)(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
-            if (i < min)
-            {
+            if (i < min) {
                 min = i;
             }
-            if (i > max)
-            {
+            if (i > max) {
                 max = i;
             }
 
@@ -37,8 +33,7 @@ Imgdata *binarize_otsu(Imgdata *img)
 
     // search best threshold
     uint8_t best_th = 0;
-    for (int i = min; i < max; i++)
-    {
+    for (int i = min; i < max; i++) {
         int th = i;
 
         // num of pix class 0/1
@@ -49,16 +44,12 @@ Imgdata *binarize_otsu(Imgdata *img)
         double m1 = 0;
 
         // get num of pix and mean of class 0/1
-        for (int j = 0; j < size; j++)
-        {
+        for (int j = 0; j < size; j++) {
             uint8_t p = gray->data[j];
-            if (p <= th)
-            {
+            if (p <= th) {
                 w0++;
                 m0 += p;
-            }
-            else
-            {
+            } else {
                 w1++;
                 m1 += p;
             }
@@ -74,8 +65,7 @@ Imgdata *binarize_otsu(Imgdata *img)
         int64_t n_sq = (int64_t)(w0 + w1) * (w0 + w1);
         double m_diff = m0 - m1;
         double icvar = ((double)w_prod / n_sq) * m_diff * m_diff;
-        if (icvar > max_icvar)
-        {
+        if (icvar > max_icvar) {
             max_icvar = icvar;
             best_th = th;
         }
@@ -85,8 +75,7 @@ Imgdata *binarize_otsu(Imgdata *img)
 
     // binarization
     Imgdata *bin = Imgdata_alloc(img->width, img->height, 1);
-    for (int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
         uint8_t p = gray->data[i];
         bin->data[i] = ((p <= best_th) ? 0 : 255);
     }
@@ -109,3 +98,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+

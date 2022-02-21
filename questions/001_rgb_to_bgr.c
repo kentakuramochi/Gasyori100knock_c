@@ -6,10 +6,8 @@ Imgdata *rgb2bgr(Imgdata *img)
 {
     Imgdata *bgr = Imgdata_alloc(img->width, img->height, img->channel);
 
-    for (int y = 0; y < img->height; y++)
-    {
-        for (int x = 0; x < img->width; x++)
-        {
+    for (int y = 0; y < img->height; y++) {
+        for (int x = 0; x < img->width; x++) {
             uint8_t r = Imgdata_at(img, x, y)[0];
             uint8_t g = Imgdata_at(img, x, y)[1];
             uint8_t b = Imgdata_at(img, x, y)[2];
@@ -36,3 +34,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+

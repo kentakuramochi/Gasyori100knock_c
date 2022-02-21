@@ -38,3 +38,4 @@ Imgdata *Imgdata_read_png(const char *filename);
 bool Imgdata_write_png(const Imgdata *img, const char *filename);
 
 #endif // IMGDATA_H
+

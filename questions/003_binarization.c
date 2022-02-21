@@ -6,10 +6,8 @@ Imgdata *binarize(Imgdata *img, int th)
 {
     Imgdata *bin = Imgdata_alloc(img->width, img->height, 1);
 
-    for (int y = 0; y < img->height; y++)
-    {
-        for (int x = 0; x < img->width; x++)
-        {
+    for (int y = 0; y < img->height; y++) {
+        for (int x = 0; x < img->width; x++) {
             uint8_t r = Imgdata_at(img, x, y)[0];
             uint8_t g = Imgdata_at(img, x, y)[1];
             uint8_t b = Imgdata_at(img, x, y)[2];
@@ -36,3 +34,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
