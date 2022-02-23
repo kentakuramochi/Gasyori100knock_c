@@ -59,12 +59,15 @@ Imgdata *binarize_otsu(Imgdata *img)
         m1 = (w1 > 0) ? (m1 / w1) : 0;
 
         // if inter-class variance is maximum, current threshold is the best
-        // need to consider overflow
-        // e.g.) 256x256: (w0+w1)=65536, 655360^2=4.3x10^9 > UINT32_MAX (2^32-1)
-        int64_t w_prod = w0 * w1;
-        int64_t n_sq = (int64_t)(w0 + w1) * (w0 + w1);
+        // inter-class variance
+        // ((w0 * w1)/((w0 + w1) * (w0 + w1))) * (m0 - m1) * (m0 - m1)
+        // -> simplify to
+        // (w0 / (w0 + w1)) * (w1 / (w0 + w1)) * (m0 - m1) * (m0 - m1)
+        int n = w0 + w1;
+        double r0 = (double)w0 / n;
+        double r1 = (double)w1 / n;
         double m_diff = m0 - m1;
-        double icvar = ((double)w_prod / n_sq) * m_diff * m_diff;
+        double icvar = (r0 * r1) * m_diff * m_diff;
         if (icvar > max_icvar) {
             max_icvar = icvar;
             best_th = th;
