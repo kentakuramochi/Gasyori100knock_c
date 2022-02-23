@@ -4,8 +4,11 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_C_COMPILER gcc)
 
-add_compile_options(-std=c11)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED true)
 
-add_subdirectory(utils)
-add_subdirectory(questions)
+set(LIB_NAME imgdata)
+
+add_subdirectory(${LIB_NAME}/src)
+add_subdirectory(answers)
 add_subdirectory(example)

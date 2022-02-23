@@ -2,72 +2,34 @@
 
 ## Description
 
-[yoyoyo-yo/Gasyori100knock](https://github.com/yoyoyo-yo/Gasyori100knock)
-
-「画像処理100本ノック」をC言語で挑戦してみる
-
-## Environment
-
-WSL Ubuntu 18.04.5 LTS
+「画像処理100本ノック」(
+[yoyoyo-yo/Gasyori100knock](https://github.com/yoyoyo-yo/Gasyori100knock) 
+) をC言語で実装する
 
 ## Prerequesites
 
-- CMake 3.10.2
+- CMake > 3.10.2
 
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
 
-    PNG画像の読み込みに使用
-    [sourceforge](https://sourceforge.net/projects/libpng/files/)から取得したソースのビルドほか、`apt`でインストール可能
+    - [sourceforge](https://sourceforge.net/projects/libpng/files/)
+    - aptでのインストール: `sudo apt install libpng-dev`
 
-    ```bash
-    $ sudo apt install libpng-dev
-
-    $ apt-show-versions -p libpng-dev
-    libpng-dev:amd64/bionic-security 1.6.34-1ubuntu0.18.04.2 uptodate
-    ```
 ## Setup
 
-スクリプト`setup.sh`によりサンプル画像をダウンロード
+スクリプト`setup.sh`で環境をセットアップする
 
-## Build
+- サンプル画像のダウンロード（[Gasyori100knockのリポジトリ](https://github.com/yoyoyo-yo/Gasyori100knock.git) からクローン、`Gasyori100knock/`に配置）
+- libpngのダウンロード（aptを使用）
 
-デフォルトのビルドターゲットは`questions/`以下の各問題に対する回答（ライブラリは依存してビルドされる）
+## Imgdata library
 
-```sh
-# @project root
-$ mkdir build
-$ cd build
-
-$ cmake ..
--- The C compiler identification is GNU 7.5.0
--- Check for working C compiler: /usr/bin/cc
--- Check for working C compiler: /usr/bin/cc -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Detecting C compile features
--- Detecting C compile features - done
--- Configuring done
-
-$ cmake --build .
-Scanning dependencies of target imgdata
-[ 25%] Building C object utils/CMakeFiles/imgdata.dir/imgdata.c.o
-[ 50%] Linking C shared library libimgdata.so
-[ 50%] Built target imgdata
-Scanning dependencies of target 001_rgb_to_bgr
-[ 75%] Building C object questions/CMakeFiles/001_rgb_to_bgr.dir/001_rgb_to_bgr.c.o
-[100%] Linking C executable 001_rgb_to_bgr
-[100%] Built target 001_rgb_to_bgr
-```
-
-## Image operation
-
-簡易的な画像データ構造を扱うライブラリ`libimgdata`を作成
-(`include/imgdata.h`, `utils/imgdata.c`)
+画像データを扱うための簡易的なライブラリ`imgdata`を作成している（ソース: `imgdata/`）
 
 ### Data structure
 
-画像データ構造体`Imgdata`
-（HWC形式、各色要素8bit、RGBオーダ）
+構造体`Imgdata`で画像データを扱う
+（HWC形式、8bit深度、RGBオーダ）
 
 ```c
 typedef struct {
@@ -80,8 +42,6 @@ typedef struct {
 
 ### Data allocation/deallocation
 
-指定サイズ・チャネル数での画像データ生成
-
 ```c
 // 640x480, 3チャネル画像の生成
 Imgdata *img = Imgdata_alloc(640, 480, 3);
@@ -91,8 +51,6 @@ Imgdata_free(img);
 ```
 
 ### Data access
-
-座標(x,y)（左上原点）における画素へのアクセス
 
 ```c
 // 座標(x,y)での色要素を取得
@@ -106,7 +64,7 @@ Imgdata_at(img, x, y)[0] = (r + g + b) / 3;
 
 ### File I/O
 
-PNG画像の入出力I/F
+PNG画像の入出力をサポートする
 
 ```c
 // PNG画像入力
@@ -116,16 +74,24 @@ Imgdata *img = Imgdata_read_png("./input.png");
 Imgdata_write_png(img, "./output.png");
 ```
 
+再利用性のある処理は適宜追加する
+
 ### Example
 
-｀example｀ターゲットの指定でサンプル（`example/example.c`）をビルド可能
+`--target example` の指定でサンプルソース（`example/example.c`）をビルドする
 
 ```sh
-$ mkdir build
-$ cmake ..
 $ cmake --build . --target example
 ```
 
-## Question
+## Answer
 
-`questions/`以下に各問題に対する回答ソースを格納
+各問題に対する回答ソースを`answers/`以下に格納する。
+デフォルトのターゲットとしてビルドされる
+
+```sh
+# @project root
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
+```
