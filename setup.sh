@@ -30,4 +30,3 @@ sudo apt update
 sudo apt install libpng-dev
 
 get_dataset
-

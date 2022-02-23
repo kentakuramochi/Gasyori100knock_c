@@ -193,4 +193,3 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
 
     return true;
 }
-
