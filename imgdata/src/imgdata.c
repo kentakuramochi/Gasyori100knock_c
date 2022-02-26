@@ -4,12 +4,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <png.h>
+#include "png.h"
 
-Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
+Imgdata *Imgdata_alloc(const int width, const int height, const int channel, const IMGDATA_DEPTH depth)
 {
-    if ((width <= 0) || (height <= 0) || (channel <= 0)) {
-        printf("[error] invalid image size\n");
+    if ((width < 1) || (height < 1) || (channel < 1)) {
+        printf("[error] invalid image size: (W,H,C)=(%d,%d,%d)\n", width, height, channel);
+        return NULL;
+    }
+
+    if ((depth != IMGDATA_DEPTH_S8) &&
+        (depth != IMGDATA_DEPTH_U8) &&
+        (depth != IMGDATA_DEPTH_S16) &&
+        (depth != IMGDATA_DEPTH_S16) &&
+        (depth != IMGDATA_DEPTH_S32) &&
+        (depth != IMGDATA_DEPTH_U32) &&
+        (depth != IMGDATA_DEPTH_F32) &&
+        (depth != IMGDATA_DEPTH_F64)) {
+        printf("[error] invalid data type\n");
         return NULL;
     }
 
@@ -22,8 +34,11 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
     img->width   = width;
     img->height  = height;
     img->channel = channel;
+    img->bpp     = channel * (int)depth;
+    img->stride  = width * channel * (int)depth;
+    img->depth   = depth;
 
-    img->data = (uint8_t*)malloc(sizeof(uint8_t) * width * height * channel);
+    img->data = malloc(sizeof(Byte) * height * width * channel * (int)depth);
     if (img->data == NULL) {
         printf("[error] failed to allocate Imgdata\n");
         free(img);
@@ -34,13 +49,13 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
     return img;
 }
 
-void Imgdata_free(Imgdata *img)
+void Imgdata_free(Imgdata **img)
 {
-    free(img->data);
-    img->data = NULL;
+    free((*img)->data);
+    (*img)->data = NULL;
 
-    free(img);
-    img = NULL;
+    free(*img);
+    *img = NULL;
 }
 
 Imgdata *Imgdata_read_png(const char *filename)
@@ -109,7 +124,7 @@ Imgdata *Imgdata_read_png(const char *filename)
     int width   = png_get_image_width(png_ptr, info_ptr);
     int height  = png_get_image_height(png_ptr, info_ptr);
 
-    Imgdata *img = Imgdata_alloc(width, height, channel);
+    Imgdata *img = Imgdata_alloc(width, height, channel, IMGDATA_DEPTH_U8);
     if (img == NULL) {
         printf("[error] failed to allocate data\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
@@ -131,6 +146,14 @@ Imgdata *Imgdata_read_png(const char *filename)
 
 bool Imgdata_write_png(const Imgdata *img, const char *filename)
 {
+    if (img == NULL) {
+        return false;
+    }
+
+    if (img->depth != IMGDATA_DEPTH_U8) {
+        return false;
+    }
+
     FILE *fp = fopen(filename, "wb");
     if (fp == NULL) {
         return false;
@@ -189,6 +212,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     png_free(png_ptr, datap);
 
     png_destroy_write_struct(&png_ptr, &info_ptr);
+
     fclose(fp);
 
     return true;

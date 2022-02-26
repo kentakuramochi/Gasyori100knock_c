@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     // read PNG image as Imgdata structure
     Imgdata *img = Imgdata_read_png(argv[1]);
     if (img == NULL) {
+        printf("[error] failed to read image file\n");
         return -1;
     }
 
@@ -34,11 +35,12 @@ int main(int argc, char *argv[])
 
     // write Imgdata as PNG image
     if (!Imgdata_write_png(img, "./output.png")) {
-        Imgdata_free(img);
+        printf("[error] failed to write image file\n");
+        Imgdata_free(&img);
         return -1;
     }
 
-    Imgdata_free(img);
+    Imgdata_free(&img);
 
     return 0;
 }

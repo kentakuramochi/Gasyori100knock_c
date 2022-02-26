@@ -2,35 +2,29 @@
 
 #include "imgdata.h"
 
-Imgdata *binarize(Imgdata *img, int th)
+void binarize(Imgdata *rgb, Imgdata *bin, int th)
 {
-    Imgdata *bin = Imgdata_alloc(img->width, img->height, 1);
-
-    for (int y = 0; y < img->height; y++) {
-        for (int x = 0; x < img->width; x++) {
-            uint8_t r = Imgdata_at(img, x, y)[0];
-            uint8_t g = Imgdata_at(img, x, y)[1];
-            uint8_t b = Imgdata_at(img, x, y)[2];
-
-            uint8_t gray = (uint8_t)(0.2126 * r + 0.7152 * g + 0.0722 * b);
-
+    for (int y = 0; y < rgb->height; y++) {
+        for (int x = 0; x < rgb->width; x++) {
+            double gray = 0.2126 * Imgdata_at(rgb, x, y)[0]
+                        + 0.7152 * Imgdata_at(rgb, x, y)[1]
+                        + 0.0722 * Imgdata_at(rgb, x, y)[2];
             Imgdata_at(bin, x, y)[0] = ((gray < th) ? 0 : 255);
         }
     }
-
-    return bin;
 }
 
 int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
 
-    Imgdata *img_bin = binarize(img, 127);
+    binarize(img, img_bin, 127);
 
     Imgdata_write_png(img_bin, "./003_bin.png");
 
-    Imgdata_free(img);
-    Imgdata_free(img_bin);
+    Imgdata_free(&img);
+    Imgdata_free(&img_bin);
 
     return 0;
 }
