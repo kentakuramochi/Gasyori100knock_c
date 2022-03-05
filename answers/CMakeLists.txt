@@ -9,6 +9,6 @@ foreach(FILE ${FILES})
         PRIVATE ${PROJECT_SOURCE_DIR}/${LIB_NAME}/include
     )
     target_link_libraries(${TARGET}
-        ${LIB_NAME}
+        ${LIB_NAME} m
     )
 endforeach()
