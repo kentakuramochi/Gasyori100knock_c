@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+########################################
+# install/download dataset and library
+########################################
 
 # clone dataset
 get_dataset()
