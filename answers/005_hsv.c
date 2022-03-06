@@ -14,8 +14,21 @@ void rgb_to_hsv(Imgdata *rgb, Imgdata *hsv)
             uint8_t g = Imgdata_at(rgb, x, y)[1];
             uint8_t b = Imgdata_at(rgb, x, y)[2];
 
-            uint8_t min = MIN(r, MIN(g, b));
-            uint8_t max = MAX(r, MAX(g, b));
+            uint8_t min = r;
+            if (g < min) {
+                min = g;
+            }
+            if (b < min) {
+                min = b;
+            }
+
+            uint8_t max = r;
+            if (g > max) {
+                max = g;
+            }
+            if (b > max) {
+                max = b;
+            }
 
             // value
             float v = max;
@@ -79,6 +92,61 @@ void hsv_to_rgb(Imgdata *hsv, Imgdata *rgb)
     }
 }
 
+void get_h_as_rgb(Imgdata *hsv, Imgdata *h)
+{
+    // convert hue as RGB
+    for (int y = 0; y < hsv->height; y++) {
+        for (int x = 0; x < hsv->width; x++) {
+            float h_ = IMGDATA_AT(hsv, float, x, y)[0];
+            if (h_ < 60) { // h >= 0
+                Imgdata_at(h, x, y)[0] = 255;
+                Imgdata_at(h, x, y)[1] = (uint8_t)(255 / 60 * h_);
+                Imgdata_at(h, x, y)[2] = 0;
+            } else if (h_ < 120) {
+                Imgdata_at(h, x, y)[0] = (uint8_t)(255 - 255 / 60 * (h_ - 60));
+                Imgdata_at(h, x, y)[1] = 255;
+                Imgdata_at(h, x, y)[2] = 0;
+            } else if (h_ < 180) {
+                Imgdata_at(h, x, y)[0] = 0;
+                Imgdata_at(h, x, y)[1] = 255;
+                Imgdata_at(h, x, y)[2] = (uint8_t)(255 / 60 * (h_ - 120));
+            } else if (h_ < 240) {
+                Imgdata_at(h, x, y)[0] = 0;
+                Imgdata_at(h, x, y)[1] = (uint8_t)(255 - 255 / 60 * (h_ - 180));
+                Imgdata_at(h, x, y)[2] = 255;
+            } else if (h_ < 300) {
+                Imgdata_at(h, x, y)[0] = (uint8_t)(255 / 60 * (h_ - 240));
+                Imgdata_at(h, x, y)[1] = 0;
+                Imgdata_at(h, x, y)[2] = 255;
+            } else { // h < 360
+                Imgdata_at(h, x, y)[0] = 255;
+                Imgdata_at(h, x, y)[1] = 0;
+                Imgdata_at(h, x, y)[2] = (uint8_t)(255 - 255 / 60 * (h_ - 300));
+            }
+        }
+    }
+}
+
+void get_s_as_grayscale(Imgdata *hsv, Imgdata *s)
+{
+    // get saturation as grayscale
+    for (int y = 0; y < hsv->height; y++) {
+        for (int x = 0; x < hsv->width; x++) {
+            Imgdata_at(s, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, float, x, y)[1];
+        }
+    }
+}
+
+void get_v_as_grayscale(Imgdata *hsv, Imgdata *v)
+{
+    // get value as grayscale
+    for (int y = 0; y < hsv->height; y++) {
+        for (int x = 0; x < hsv->width; x++) {
+            Imgdata_at(v, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, float, x, y)[2];
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png(argv[1]);
@@ -105,9 +173,26 @@ int main(int argc, char *argv[])
 
     Imgdata_write_png(img_ret_rgb, "./005_h_rev.png");
 
+    // get H/S/V values as a image
+    Imgdata *img_h = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
+    get_h_as_rgb(img_hsv, img_h);
+    Imgdata_write_png(img_h, "./005_h.png");
+
+    Imgdata *img_s = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    get_s_as_grayscale(img_hsv, img_s);
+    Imgdata_write_png(img_s, "./005_s.png");
+
+    Imgdata *img_v = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    get_v_as_grayscale(img_hsv, img_v);
+    Imgdata_write_png(img_v, "./005_v.png");
+
     Imgdata_free(&img);
     Imgdata_free(&img_hsv);
     Imgdata_free(&img_ret_rgb);
+    
+    Imgdata_free(&img_h);
+    Imgdata_free(&img_s);
+    Imgdata_free(&img_v);
 
     return 0;
 }
