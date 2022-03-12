@@ -94,10 +94,9 @@ void binarize_otsu(Imgdata *rgb, Imgdata *bin)
 int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png(argv[1]);
+
     Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
-
     binarize_otsu(img, img_bin);
-
     Imgdata_write_png(img_bin, "./004_bin.png");
 
     Imgdata_free(&img);

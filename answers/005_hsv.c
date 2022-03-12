@@ -153,25 +153,8 @@ int main(int argc, char *argv[])
 
     // store HSV image with float for calculation
     Imgdata *img_hsv = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_F32);
-
     // RGB to HSV
     rgb_to_hsv(img, img_hsv);
-
-    // reverse hue
-    for (int y = 0; y < img_hsv->height; y++) {
-        for (int x = 0; x < img_hsv->width; x++) {
-            float h = IMGDATA_AT(img_hsv, float, x, y)[0];
-            IMGDATA_AT(img_hsv, float, x, y)[0] = fmod((h + 180), 360);
-        }
-    }
-
-    // return HSV to RGB
-    Imgdata *img_ret_rgb = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
-
-    // HSV to RGB
-    hsv_to_rgb(img_hsv, img_ret_rgb);
-
-    Imgdata_write_png(img_ret_rgb, "./005_h_rev.png");
 
     // get H/S/V values as a image
     Imgdata *img_h = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
@@ -186,13 +169,26 @@ int main(int argc, char *argv[])
     get_v_as_grayscale(img_hsv, img_v);
     Imgdata_write_png(img_v, "./005_v.png");
 
+    // reverse hue
+    for (int y = 0; y < img_hsv->height; y++) {
+        for (int x = 0; x < img_hsv->width; x++) {
+            float h = IMGDATA_AT(img_hsv, float, x, y)[0];
+            IMGDATA_AT(img_hsv, float, x, y)[0] = fmod((h + 180), 360);
+        }
+    }
+
+    // return HSV to RGB
+    Imgdata *img_ret_rgb = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    // HSV to RGB
+    hsv_to_rgb(img_hsv, img_ret_rgb);
+    Imgdata_write_png(img_ret_rgb, "./005_h_rev.png");
+
     Imgdata_free(&img);
     Imgdata_free(&img_hsv);
-    Imgdata_free(&img_ret_rgb);
-    
     Imgdata_free(&img_h);
     Imgdata_free(&img_s);
     Imgdata_free(&img_v);
+    Imgdata_free(&img_ret_rgb);
 
     return 0;
 }

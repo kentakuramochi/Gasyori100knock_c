@@ -16,10 +16,9 @@ void rgb2bgr(Imgdata *rgb, Imgdata *bgr)
 int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png(argv[1]);
+
     Imgdata *img_bgr = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
-
     rgb2bgr(img, img_bgr);
-
     Imgdata_write_png(img_bgr, "./001_bgr.png");
 
     Imgdata_free(&img);

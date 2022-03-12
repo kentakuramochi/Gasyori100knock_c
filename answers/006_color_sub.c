@@ -21,11 +21,10 @@ int main(int argc, char *argv[])
 
     Imgdata *img_sub4 = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
     color_subtraction(img, img_sub4, 4);
+    Imgdata_write_png(img_sub4, "./006_sub_4.png");
 
     Imgdata *img_sub8 = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
     color_subtraction(img, img_sub8, 8);
-
-    Imgdata_write_png(img_sub4, "./006_sub_4.png");
     Imgdata_write_png(img_sub8, "./006_sub_8.png");
 
     Imgdata_free(&img);

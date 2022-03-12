@@ -17,10 +17,9 @@ void binarize(Imgdata *rgb, Imgdata *bin, int th)
 int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png(argv[1]);
+
     Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
-
     binarize(img, img_bin, 127);
-
     Imgdata_write_png(img_bin, "./003_bin.png");
 
     Imgdata_free(&img);
