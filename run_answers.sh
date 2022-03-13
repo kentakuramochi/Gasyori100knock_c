@@ -47,6 +47,17 @@ SRC_IMGS=(
     "${SRC_IMG_DIR}/imori_256x256.png"
     "${SRC_IMG_DIR}/imori_256x256_noise.png"
     "${SRC_IMG_DIR}/imori_256x256_noise.png"
+    # Q. 11-20
+    "${SRC_IMG_DIR}/imori_256x256_noise.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256.png"
+    "${SRC_IMG_DIR}/imori_256x256_noise.png"
+    "${SRC_IMG_DIR}/imori_256x256_dark.png"
 )
 
 # create directory for output images
