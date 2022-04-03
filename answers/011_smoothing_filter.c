@@ -1,17 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "imgdata.h"
-
-// compare function for qsort
-static int compare_int(const void *a, const void *b)
-{
-    int ia = *(int*)a;
-    int ib = *(int*)b;
-
-    return (ia - ib);
-}
 
 void smoothing_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh)
 {
