@@ -15,9 +15,7 @@ static int compare_int(const void *a, const void *b)
 
 void smoothing_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh)
 {
-    // create kernel
     const int ksize = kh * kw;
-    int *k = malloc(sizeof(int) * ksize);
 
     // set start position include padding
     const int s_kx = -(kw / 2);
@@ -51,9 +49,6 @@ void smoothing_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int 
             }
         }
     }
-
-    free(k);
-    k = NULL;
 }
 
 int main(int argc, char *argv[])
@@ -62,11 +57,11 @@ int main(int argc, char *argv[])
 
     Imgdata *img_smooth_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
     smoothing_filter(img, img_smooth_k5, 5, 5);
-    Imgdata_write_png(img_smooth_k5, "./010_smooth_k5.png");
+    Imgdata_write_png(img_smooth_k5, "./011_smooth_k5.png");
 
     Imgdata *img_smooth_k9 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
     smoothing_filter(img, img_smooth_k9, 9, 9);
-    Imgdata_write_png(img_smooth_k9, "./010_smooth_k9.png");
+    Imgdata_write_png(img_smooth_k9, "./011_smooth_k9.png");
 
     Imgdata_free(&img);
     Imgdata_free(&img_smooth_k5);
