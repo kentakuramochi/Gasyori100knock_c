@@ -16,11 +16,9 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel, con
     if ((depth != IMGDATA_DEPTH_S8) &&
         (depth != IMGDATA_DEPTH_U8) &&
         (depth != IMGDATA_DEPTH_S16) &&
-        (depth != IMGDATA_DEPTH_S16) &&
+        (depth != IMGDATA_DEPTH_U16) &&
         (depth != IMGDATA_DEPTH_S32) &&
-        (depth != IMGDATA_DEPTH_U32) &&
-        (depth != IMGDATA_DEPTH_F32) &&
-        (depth != IMGDATA_DEPTH_F64)) {
+        (depth != IMGDATA_DEPTH_U32)) {
         printf("[error] invalid data type\n");
         return NULL;
     }
@@ -38,7 +36,7 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel, con
     img->stride  = width * channel * (int)depth;
     img->depth   = depth;
 
-    img->data = malloc(sizeof(Byte) * height * width * channel * (int)depth);
+    img->data = malloc(sizeof(uint8_t) * height * width * channel * (int)depth);
     if (img->data == NULL) {
         printf("[error] failed to allocate Imgdata\n");
         free(img);
@@ -114,7 +112,7 @@ Imgdata *Imgdata_read_png(const char *filename)
     } else if (type == PNG_COLOR_TYPE_RGB_ALPHA) {
         channel = 4;
     } else {
-        printf("[error] invalid color type: support GRAY/RGB/RGB_ALPHA only\n");
+        printf("[error] invalid color type: only GRAY/RGB/RGB_ALPHA are supported\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         fclose(fp);
         return NULL;
@@ -151,6 +149,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     }
 
     if (img->depth != IMGDATA_DEPTH_U8) {
+        printf("[error] invalid format, only unsigned 8bit data are supported\n");
         return false;
     }
 
@@ -182,7 +181,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     } else if (img->channel == 4) {
         type = PNG_COLOR_TYPE_RGB_ALPHA;
     } else {
-        printf("[error] invalid channel num=%d, support 1(GRAY)/3(RGB)/4(RGB_ALPHA) only", img->channel);
+        printf("[error] invalid channel num=%d, only 1(GRAY)/3(RGB)/4(RGB_ALPHA) are supported\n", img->channel);
         png_destroy_write_struct(&png_ptr, &info_ptr);
         fclose(fp);
         return false;

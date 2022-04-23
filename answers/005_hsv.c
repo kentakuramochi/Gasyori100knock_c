@@ -31,23 +31,23 @@ void rgb_to_hsv(Imgdata *rgb, Imgdata *hsv)
             }
 
             // value
-            float v = max;
+            int v = max;
 
             // saturation
-            float s = max - min;
+            int s = max - min;
 
             // hue
-            float h = (min == max) ? 0 :
-                      // B is minimum
-                      (min == b) ? (60.0f * ((g - r) / s) + 60) :
-                      // R is minimum
-                      (min == r) ? (60.0f * ((b - g) / s) + 180) :
-                      // G is minimum
-                      (60.0f * ((r - b) / s) + 300) ;
+            int h = (min == max) ? 0 :
+                    // B is minimum
+                    (min == b) ? (60 * ((float)(g - r) / s) + 60) :
+                    // R is minimum
+                    (min == r) ? (60 * ((float)(b - g) / s) + 180) :
+                    // G is minimum
+                    (60 * ((float)(r - b) / s) + 300) ;
 
-            IMGDATA_AT(hsv, float, x, y)[0] = h;
-            IMGDATA_AT(hsv, float, x, y)[1] = s;
-            IMGDATA_AT(hsv, float, x, y)[2] = v;
+            IMGDATA_AT(hsv, uint16_t, x, y)[0] = h;
+            IMGDATA_AT(hsv, uint16_t, x, y)[1] = s;
+            IMGDATA_AT(hsv, uint16_t, x, y)[2] = v;
         }
     }
 }
@@ -56,9 +56,9 @@ void hsv_to_rgb(Imgdata *hsv, Imgdata *rgb)
 {
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            float h = IMGDATA_AT(hsv, float, x, y)[0];
-            float s = IMGDATA_AT(hsv, float, x, y)[1];
-            float v = IMGDATA_AT(hsv, float, x, y)[2];
+            int h = IMGDATA_AT(hsv, uint16_t, x, y)[0];
+            int s = IMGDATA_AT(hsv, uint16_t, x, y)[1];
+            int v = IMGDATA_AT(hsv, uint16_t, x, y)[2];
 
             float h_ = h / 60.0f;
             float x_ = s * (1 - fabs(fmod(h_, 2) - 1));
@@ -97,31 +97,31 @@ void get_h_as_rgb(Imgdata *hsv, Imgdata *h)
     // convert hue as RGB
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            float h_ = IMGDATA_AT(hsv, float, x, y)[0];
+            int h_ = IMGDATA_AT(hsv, uint16_t, x, y)[0];
             if (h_ < 60) { // h >= 0
                 Imgdata_at(h, x, y)[0] = 255;
-                Imgdata_at(h, x, y)[1] = (uint8_t)(255 / 60 * h_);
+                Imgdata_at(h, x, y)[1] = (uint8_t)((255.0f / 60) * h_);
                 Imgdata_at(h, x, y)[2] = 0;
             } else if (h_ < 120) {
-                Imgdata_at(h, x, y)[0] = (uint8_t)(255 - 255 / 60 * (h_ - 60));
+                Imgdata_at(h, x, y)[0] = (uint8_t)(255 - (255.0f / 60) * (h_ - 60));
                 Imgdata_at(h, x, y)[1] = 255;
                 Imgdata_at(h, x, y)[2] = 0;
             } else if (h_ < 180) {
                 Imgdata_at(h, x, y)[0] = 0;
                 Imgdata_at(h, x, y)[1] = 255;
-                Imgdata_at(h, x, y)[2] = (uint8_t)(255 / 60 * (h_ - 120));
+                Imgdata_at(h, x, y)[2] = (uint8_t)((255.0f / 60) * (h_ - 120));
             } else if (h_ < 240) {
                 Imgdata_at(h, x, y)[0] = 0;
-                Imgdata_at(h, x, y)[1] = (uint8_t)(255 - 255 / 60 * (h_ - 180));
+                Imgdata_at(h, x, y)[1] = (uint8_t)(255 - (255.0f / 60) * (h_ - 180));
                 Imgdata_at(h, x, y)[2] = 255;
             } else if (h_ < 300) {
-                Imgdata_at(h, x, y)[0] = (uint8_t)(255 / 60 * (h_ - 240));
+                Imgdata_at(h, x, y)[0] = (uint8_t)((255.0f / 60) * (h_ - 240));
                 Imgdata_at(h, x, y)[1] = 0;
                 Imgdata_at(h, x, y)[2] = 255;
             } else { // h < 360
                 Imgdata_at(h, x, y)[0] = 255;
                 Imgdata_at(h, x, y)[1] = 0;
-                Imgdata_at(h, x, y)[2] = (uint8_t)(255 - 255 / 60 * (h_ - 300));
+                Imgdata_at(h, x, y)[2] = (uint8_t)(255 - (255.0f / 60) * (h_ - 300));
             }
         }
     }
@@ -132,7 +132,7 @@ void get_s_as_grayscale(Imgdata *hsv, Imgdata *s)
     // get saturation as grayscale
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            Imgdata_at(s, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, float, x, y)[1];
+            Imgdata_at(s, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, uint16_t, x, y)[1];
         }
     }
 }
@@ -142,7 +142,7 @@ void get_v_as_grayscale(Imgdata *hsv, Imgdata *v)
     // get value as grayscale
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            Imgdata_at(v, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, float, x, y)[2];
+            Imgdata_at(v, x, y)[0] = (uint8_t)IMGDATA_AT(hsv, uint16_t, x, y)[2];
         }
     }
 }
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
     Imgdata *img = Imgdata_read_png(argv[1]);
 
     // store HSV image with float for calculation
-    Imgdata *img_hsv = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_F32);
+    Imgdata *img_hsv = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U16);
     // RGB to HSV
     rgb_to_hsv(img, img_hsv);
 
@@ -172,8 +172,8 @@ int main(int argc, char *argv[])
     // reverse hue
     for (int y = 0; y < img_hsv->height; y++) {
         for (int x = 0; x < img_hsv->width; x++) {
-            float h = IMGDATA_AT(img_hsv, float, x, y)[0];
-            IMGDATA_AT(img_hsv, float, x, y)[0] = fmod((h + 180), 360);
+            int h = IMGDATA_AT(img_hsv, uint16_t, x, y)[0];
+            IMGDATA_AT(img_hsv, uint16_t, x, y)[0] = fmod((h + 180), 360);
         }
     }
 
