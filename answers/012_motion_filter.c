@@ -43,7 +43,7 @@ void motion_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh)
                     }
                 }
 
-                Imgdata_at(filtered, x, y)[c] = (Byte)f_val;
+                Imgdata_at(filtered, x, y)[c] = (uint8_t)f_val;
             }
         }
     }

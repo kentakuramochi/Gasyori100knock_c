@@ -6,9 +6,9 @@ void binarize(Imgdata *rgb, Imgdata *bin, int th)
 {
     for (int y = 0; y < rgb->height; y++) {
         for (int x = 0; x < rgb->width; x++) {
-            double gray = 0.2126 * Imgdata_at(rgb, x, y)[0]
-                        + 0.7152 * Imgdata_at(rgb, x, y)[1]
-                        + 0.0722 * Imgdata_at(rgb, x, y)[2];
+            int gray = 0.2126 * Imgdata_at(rgb, x, y)[0]
+                     + 0.7152 * Imgdata_at(rgb, x, y)[1]
+                     + 0.0722 * Imgdata_at(rgb, x, y)[2];
             Imgdata_at(bin, x, y)[0] = ((gray < th) ? 0 : 255);
         }
     }

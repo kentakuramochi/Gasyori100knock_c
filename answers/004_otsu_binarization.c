@@ -12,10 +12,9 @@ void binarize_otsu(Imgdata *rgb, Imgdata *bin)
 
     for (int y = 0; y < rgb->height; y++) {
         for (int x = 0; x < rgb->width; x++) {
-            double p = (
-                  0.2126 * Imgdata_at(rgb, x, y)[0]
-                + 0.7152 * Imgdata_at(rgb, x, y)[1]
-                + 0.0722 * Imgdata_at(rgb, x, y)[2]);
+            int p = ( 0.2126 * Imgdata_at(rgb, x, y)[0]
+                    + 0.7152 * Imgdata_at(rgb, x, y)[1]
+                    + 0.0722 * Imgdata_at(rgb, x, y)[2]);
 
             if (p < min) {
                 min = p;
@@ -66,7 +65,7 @@ void binarize_otsu(Imgdata *rgb, Imgdata *bin)
         // ((w0 * w1)/((w0 + w1) * (w0 + w1))) * (m0 - m1) * (m0 - m1)
         // -> simplify to
         // (w0 / (w0 + w1)) * (w1 / (w0 + w1)) * (m0 - m1) * (m0 - m1)
-        int n  = w0 + w1;
+        int n = w0 + w1;
         double r0 = (double)w0 / n;
         double r1 = (double)w1 / n;
         double m_diff = m0 - m1;
