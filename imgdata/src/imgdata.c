@@ -32,11 +32,10 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel, con
     img->width   = width;
     img->height  = height;
     img->channel = channel;
-    img->bpp     = channel * (int)depth;
     img->stride  = width * channel * (int)depth;
     img->depth   = depth;
 
-    img->data = malloc(sizeof(uint8_t) * height * width * channel * (int)depth);
+    img->data = malloc(sizeof(int32_t) * height * width * channel);
     if (img->data == NULL) {
         printf("[error] failed to allocate Imgdata\n");
         free(img);
@@ -119,8 +118,8 @@ Imgdata *Imgdata_read_png(const char *filename)
     }
 
     // allocate Imgdata
-    int width   = png_get_image_width(png_ptr, info_ptr);
-    int height  = png_get_image_height(png_ptr, info_ptr);
+    int width  = png_get_image_width(png_ptr, info_ptr);
+    int height = png_get_image_height(png_ptr, info_ptr);
 
     Imgdata *img = Imgdata_alloc(width, height, channel, IMGDATA_DEPTH_U8);
     if (img == NULL) {
@@ -132,8 +131,14 @@ Imgdata *Imgdata_read_png(const char *filename)
 
     // copy data per row
     png_bytepp datap = png_get_rows(png_ptr, info_ptr);
+    const int w_elems = img->width * img->channel;
     for (int i = 0; i < img->height; i++) {
-        memcpy((img->data + i * img->width * img->channel), datap[i], img->width * img->channel);
+        uint8_t *src_p = datap[i];
+        int32_t *dst_p = (img->data + i * img->stride);
+        // data copy with cast
+        for (int j = 0; j < w_elems ; j++) {
+            dst_p[j] = (int32_t)src_p[j];
+        }
     }
 
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
@@ -197,9 +202,16 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
     // copy data per row
     png_bytepp datap = png_malloc(png_ptr, sizeof(png_bytep) * img->height);
     png_set_rows(png_ptr, info_ptr, datap);
+
+    const int w_elems = img->width * img->channel;
     for (int i = 0; i < img->height; i++) {
-        datap[i] = png_malloc(png_ptr, (img->width * img->channel));
-        memcpy(datap[i], (img->data + i * img->width * img->channel), (img->width * img->channel));
+        datap[i] = png_malloc(png_ptr, img->stride);
+        int32_t *src_p = (img->data + i * w_elems);
+        uint8_t *dst_p = datap[i];
+        // data copy with cast
+        for (int j = 0; j < w_elems; j++) {
+            dst_p[j] = (uint8_t)src_p[j];
+        }
     }
 
     // write data

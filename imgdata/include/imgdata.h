@@ -20,10 +20,9 @@ typedef struct Imgdata {
     int width;              // image width
     int height;             // image height
     int channel;            // num of channels
-    int bpp;                // byte per pixel
     int stride;             // image stride in bytes
-    IMGDATA_DEPTH depth;    // bit depth per 1 channel
-    uint8_t *data;          // pointer to raw data
+    IMGDATA_DEPTH depth;    // bit depth per 1 element
+    int32_t *data;          // pointer to raw data
 } Imgdata;
 
 // num of color channels
@@ -31,16 +30,13 @@ typedef struct Imgdata {
 #define IMGDATA_NCH_GRAY 1
 #define IMGDATA_NCH_RGB  3
 #define IMGDATA_NCH_YUV  3
-//#define IMGDATA_NCH_RGBA 4
+#define IMGDATA_NCH_RGBA 4
 
 // get pointer to pixel data at (x,y)
-static inline uint8_t *Imgdata_at(Imgdata *img, const int x, const int y)
+static inline int32_t *Imgdata_at(Imgdata *img, const int x, const int y)
 {
-    return (img->data + y * img->stride + x * img->bpp);
+    return (img->data + y * (img->width * img->channel) + x * img->channel);
 }
-
-// get pointer to pixel data at (x,y) with specified data type
-#define IMGDATA_AT(img, dtype, x, y) ((dtype*)(Imgdata_at((img), (x), (y))))
 
 // allocate Imgdata
 Imgdata *Imgdata_alloc(const int width, const int height, const int channel, const IMGDATA_DEPTH depth);
