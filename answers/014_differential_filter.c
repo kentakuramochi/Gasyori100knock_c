@@ -53,11 +53,8 @@ void differential_filter(Imgdata *img,  Imgdata *filtered, const bool diff_x)
                         }
 
                         val += Imgdata_at(img, p_x, p_y)[c] * k[i * k_size + j];
-                        //printf("%d ", val);
                     }
                 }
-                //printf("\n");
-                //getchar();
 
                 Imgdata_at(filtered, x, y)[c] = (val > 0) ? val : 0;
             }
