@@ -25,15 +25,15 @@ void prewitt_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh
 
             if (!diff_x) {
                 if (i == 0) {
-                    k[k_idx] = 1;
-                } else if (i == (kh - 1)) {
                     k[k_idx] = -1;
+                } else if (i == (kh - 1)) {
+                    k[k_idx] = 1;
                 }
             } else {
                 if (j == 0) {
-                    k[k_idx] = 1;
-                } else if (j == (kw - 1)) {
                     k[k_idx] = -1;
+                } else if (j == (kw - 1)) {
+                    k[k_idx] = 1;
                 }
             }
 
@@ -73,6 +73,9 @@ void prewitt_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh
             }
         }
     }
+
+    free(k);
+    k = NULL;
 }
 
 int main(int argc, char *argv[])
