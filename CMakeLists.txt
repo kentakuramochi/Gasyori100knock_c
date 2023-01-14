@@ -11,4 +11,4 @@ set(LIB_NAME imgdata)
 
 add_subdirectory(${LIB_NAME}/src)
 add_subdirectory(answers)
-add_subdirectory(example)
+add_subdirectory(example EXCLUDE_FROM_ALL)
