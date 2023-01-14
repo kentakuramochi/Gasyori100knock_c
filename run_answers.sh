@@ -61,7 +61,7 @@ SRC_IMGS=(
 )
 
 # create directory for output images
-OUT_IMG_DIR=${ANSWERS_DIR}/out
+OUT_IMG_DIR=${ROOT_DIR}/output
 mkdir -p ${OUT_IMG_DIR}
 
 # run answer programs

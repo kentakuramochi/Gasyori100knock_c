@@ -136,4 +136,4 @@ $ cmake --build .
 ```
 
 スクリプト`./run_all_answers.sh` で全回答プログラムを一括実行する
-（プログラム、出力画像をそれぞれ `build/answers/`, `build/answers/out/` 以下に格納する）
+（出力画像を `build/output/` 以下に格納する）
