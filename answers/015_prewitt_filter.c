@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     rgb2gray(img, gray);
 
-    Imgdata *img_prewitt_x_k5 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
-    Imgdata *img_prewitt_y_k5 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *img_prewitt_x_k5 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
+    Imgdata *img_prewitt_y_k5 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
 
     prewitt_filter(gray, img_prewitt_x_k5, 5, 5, true);
     prewitt_filter(gray, img_prewitt_y_k5, 5, 5, false);

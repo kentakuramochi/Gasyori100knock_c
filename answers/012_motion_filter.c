@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_motion_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_motion_k5 = Imgdata_alloc(img->width, img->height, img->channel);
     motion_filter(img, img_motion_k5, 5, 5);
     Imgdata_write_png(img_motion_k5, "./012_motion_k5.png");
 

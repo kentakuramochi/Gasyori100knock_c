@@ -97,15 +97,15 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
-    Imgdata *img_log_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_log_k5 = Imgdata_alloc(img->width, img->height, img->channel);
     log_filter(img, img_log_k5, 5, 5, 3);
     Imgdata_write_png(img_log_k5, "./019_log_k5.png");
 
-    Imgdata *img_log_k12 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_log_k12 = Imgdata_alloc(img->width, img->height, img->channel);
     log_filter(img, img_log_k12, 12, 12, 3);
     Imgdata_write_png(img_log_k12, "./019_log_k12.png");
 
-    Imgdata *img_log_k9 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_log_k9 = Imgdata_alloc(img->width, img->height, img->channel);
     log_filter(img, img_log_k9, 9, 9, 9);
     Imgdata_write_png(img_log_k9, "./019_log_k9.png");
 

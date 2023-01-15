@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_maxpool8 = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
+    Imgdata *img_maxpool8 = Imgdata_alloc(img->width, img->height, 3);
     max_pooling(img, img_maxpool8, 8, 8);
     Imgdata_write_png(img_maxpool8, "./008_max_k8.png");
 

@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
-    Imgdata *img_smooth_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_smooth_k5 = Imgdata_alloc(img->width, img->height, img->channel);
     smoothing_filter(img, img_smooth_k5, 5, 5);
     Imgdata_write_png(img_smooth_k5, "./011_smooth_k5.png");
 
-    Imgdata *img_smooth_k9 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_smooth_k9 = Imgdata_alloc(img->width, img->height, img->channel);
     smoothing_filter(img, img_smooth_k9, 9, 9);
     Imgdata_write_png(img_smooth_k9, "./011_smooth_k9.png");
 

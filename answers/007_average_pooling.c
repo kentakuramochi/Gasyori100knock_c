@@ -59,11 +59,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_avgpool8 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_avgpool8 = Imgdata_alloc(img->width, img->height, img->channel);
     average_pooling(img, img_avgpool8, 8, 8);
     Imgdata_write_png(img_avgpool8, "./007_avg_k8.png");
 
-    Imgdata *img_avgpool16 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_avgpool16 = Imgdata_alloc(img->width, img->height, img->channel);
     average_pooling(img, img_avgpool16, 16, 16);
     Imgdata_write_png(img_avgpool16, "./007_avg_k16.png");
 

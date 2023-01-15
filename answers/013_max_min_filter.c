@@ -63,10 +63,10 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *gray = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(img->width, img->height, 1);
     rgb2gray(img, gray);
 
-    Imgdata *img_max_min_k5 = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *img_max_min_k5 = Imgdata_alloc(img->width, img->height, 1);
 
     max_min_filter(gray, img_max_min_k5, 5, 5);
 

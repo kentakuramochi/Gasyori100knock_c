@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_bgr = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
+    Imgdata *img_bgr = Imgdata_alloc(img->width, img->height, 3);
     rgb2bgr(img, img_bgr);
     Imgdata_write_png(img_bgr, "./001_bgr.png");
 

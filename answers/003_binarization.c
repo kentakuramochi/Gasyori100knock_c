@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1);
     binarize(img, img_bin, 127);
     Imgdata_write_png(img_bin, "./003_bin.png");
 

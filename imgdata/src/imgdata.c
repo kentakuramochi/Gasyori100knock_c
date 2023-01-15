@@ -6,20 +6,10 @@
 
 #include "png.h"
 
-Imgdata *Imgdata_alloc(const int width, const int height, const int channel, const IMGDATA_DEPTH depth)
+Imgdata *Imgdata_alloc(const int width, const int height, const int channel)
 {
     if ((width < 1) || (height < 1) || (channel < 1)) {
         printf("[error] invalid image size: (W,H,C)=(%d,%d,%d)\n", width, height, channel);
-        return NULL;
-    }
-
-    if ((depth != IMGDATA_DEPTH_S8) &&
-        (depth != IMGDATA_DEPTH_U8) &&
-        (depth != IMGDATA_DEPTH_S16) &&
-        (depth != IMGDATA_DEPTH_U16) &&
-        (depth != IMGDATA_DEPTH_S32) &&
-        (depth != IMGDATA_DEPTH_U32)) {
-        printf("[error] invalid data type\n");
         return NULL;
     }
 
@@ -32,8 +22,7 @@ Imgdata *Imgdata_alloc(const int width, const int height, const int channel, con
     img->width   = width;
     img->height  = height;
     img->channel = channel;
-    img->stride  = width * channel * (int)depth;
-    img->depth   = depth;
+    img->stride  = width * channel;
 
     img->data = malloc(sizeof(int32_t) * height * width * channel);
     if (img->data == NULL) {
@@ -121,7 +110,7 @@ Imgdata *Imgdata_read_png(const char *filename)
     int width  = png_get_image_width(png_ptr, info_ptr);
     int height = png_get_image_height(png_ptr, info_ptr);
 
-    Imgdata *img = Imgdata_alloc(width, height, channel, IMGDATA_DEPTH_U8);
+    Imgdata *img = Imgdata_alloc(width, height, channel);
     if (img == NULL) {
         printf("[error] failed to allocate data\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
@@ -153,9 +142,13 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
         return false;
     }
 
-    if (img->depth != IMGDATA_DEPTH_U8) {
-        printf("[error] invalid format, only unsigned 8bit data are supported\n");
-        return false;
+    const int size = img->height * img->height * img->channel;
+    for (int i = 0; i < size; i++) {
+        int pixel = img->data[i];
+        if ((pixel < 0) || (pixel > UINT8_MAX)) {
+            printf("[error] the pixel value (%d) exceeds the range of unsigned 8bit data\n", pixel);
+            return false;
+        }
     }
 
     FILE *fp = fopen(filename, "wb");

@@ -5,7 +5,7 @@
 void binarize_otsu(Imgdata *rgb, Imgdata *bin)
 {
     // get grayscale and min/max
-    Imgdata *gray = Imgdata_alloc(rgb->width, rgb->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(rgb->width, rgb->height, 1);
 
     uint8_t min = 255;
     uint8_t max = 0;
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *img_bin = Imgdata_alloc(img->width, img->height, 1);
     binarize_otsu(img, img_bin);
     Imgdata_write_png(img_bin, "./004_bin.png");
 

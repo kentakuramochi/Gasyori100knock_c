@@ -152,20 +152,20 @@ int main(int argc, char *argv[])
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
     // store HSV image with float for calculation
-    Imgdata *img_hsv = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U16);
+    Imgdata *img_hsv = Imgdata_alloc(img->width, img->height, 3);
     // RGB to HSV
     rgb_to_hsv(img, img_hsv);
 
     // get H/S/V values as a image
-    Imgdata *img_h = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
+    Imgdata *img_h = Imgdata_alloc(img->width, img->height, 3);
     get_h_as_rgb(img_hsv, img_h);
     Imgdata_write_png(img_h, "./005_h.png");
 
-    Imgdata *img_s = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *img_s = Imgdata_alloc(img->width, img->height, 1);
     get_s_as_grayscale(img_hsv, img_s);
     Imgdata_write_png(img_s, "./005_s.png");
 
-    Imgdata *img_v = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
+    Imgdata *img_v = Imgdata_alloc(img->width, img->height, 1);
     get_v_as_grayscale(img_hsv, img_v);
     Imgdata_write_png(img_v, "./005_v.png");
 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
     }
 
     // return HSV to RGB
-    Imgdata *img_ret_rgb = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_ret_rgb = Imgdata_alloc(img->width, img->height, img->channel);
     // HSV to RGB
     hsv_to_rgb(img_hsv, img_ret_rgb);
     Imgdata_write_png(img_ret_rgb, "./005_h_rev.png");

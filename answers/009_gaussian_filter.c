@@ -64,15 +64,15 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
-    Imgdata *img_gauss_k3 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_gauss_k3 = Imgdata_alloc(img->width, img->height, img->channel);
     gaussian_filter(img, img_gauss_k3, 3, 3, 1.3);
     Imgdata_write_png(img_gauss_k3, "./009_gauss_k3.png");
 
-    Imgdata *img_gauss_k7 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_gauss_k7 = Imgdata_alloc(img->width, img->height, img->channel);
     gaussian_filter(img, img_gauss_k7, 7, 7, 1.3);
     Imgdata_write_png(img_gauss_k7, "./009_gauss_k7.png");
 
-    Imgdata *img_gauss_k7s3 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_gauss_k7s3 = Imgdata_alloc(img->width, img->height, img->channel);
     gaussian_filter(img, img_gauss_k7s3, 7, 7, 3);
     Imgdata_write_png(img_gauss_k7s3, "./009_gauss_k7s3.png");
 

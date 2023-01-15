@@ -15,8 +15,7 @@ typedef struct Imgdata {
     int width;              // image width
     int height;             // image height
     int channel;            // num of channels
-    int stride;             // image stride in bytes
-    IMGDATA_DEPTH depth;    // bit depth per 1 element
+    int stride;             // image stride in pixel
     int32_t *data;          // pointer to raw data
 } Imgdata;
 ```
@@ -25,29 +24,13 @@ typedef struct Imgdata {
 
 ```c
 // 640x480, 3チャネル, 8bit 画像の生成
-Imgdata *img = Imgdata_alloc(640, 480, 3, IMGDATA_DEPTH_U8);
+Imgdata *img = Imgdata_alloc(640, 480, 3);
 
 // 破棄
 Imgdata_free(&img);
 ```
 
-生成時に1チャネル当たりのビット深度をパラメータで指定する
-（YUV処理のため内部的には32bit整数値で保持しており、現状利用していない）。
-
-```c
-// bit depth for Imgdata
-typedef enum IMGDATA_DEPTH {
-    IMGDATA_DEPTH_INVALID = 0,
-    IMGDATA_DEPTH_S8 = 1,   // signed 8bit
-    IMGDATA_DEPTH_U8 = 1,   // unsigned 8bit
-    IMGDATA_DEPTH_S16 = 2,  // unsigned 16bit
-    IMGDATA_DEPTH_U16 = 2,  // unsigned 16bit
-    IMGDATA_DEPTH_S32 = 4,  // unsigned 32bit
-    IMGDATA_DEPTH_U32 = 4,  // unsigned 32bit
-    IMGDATA_DEPTH_F32 = 4,  // float 32bit
-    IMGDATA_DEPTH_F64 = 8,  // double presicion float 64bit
-} IMGDATA_DEPTH;
-```
+YUV等の画像処理のため、各画素値は32bit整数値で保持している。
 
 ## Data access
 

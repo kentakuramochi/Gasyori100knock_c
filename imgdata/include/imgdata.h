@@ -4,24 +4,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// bit depth for Imgdata
-typedef enum IMGDATA_DEPTH {
-    IMGDATA_DEPTH_INVALID = 0,
-    IMGDATA_DEPTH_S8  = 1, // signed 8bit
-    IMGDATA_DEPTH_U8  = 1, // unsigned 8bit
-    IMGDATA_DEPTH_S16 = 2, // unsigned 16bit
-    IMGDATA_DEPTH_U16 = 2, // unsigned 16bit
-    IMGDATA_DEPTH_S32 = 4, // unsigned 32bit
-    IMGDATA_DEPTH_U32 = 4  // unsigned 32bit
-} IMGDATA_DEPTH;
-
 // image data strucute
 typedef struct Imgdata {
     int width;              // image width
     int height;             // image height
     int channel;            // num of channels
-    int stride;             // image stride in bytes
-    IMGDATA_DEPTH depth;    // bit depth per 1 element
+    int stride;             // image stride in pixel
     int32_t *data;          // pointer to raw data
 } Imgdata;
 
@@ -39,7 +27,7 @@ static inline int32_t *Imgdata_at(Imgdata *img, const int x, const int y)
 }
 
 // allocate Imgdata
-Imgdata *Imgdata_alloc(const int width, const int height, const int channel, const IMGDATA_DEPTH depth);
+Imgdata *Imgdata_alloc(const int width, const int height, const int channel);
 
 // free Imgdata
 void Imgdata_free(Imgdata **img);

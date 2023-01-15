@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
-    Imgdata *img_median_k3 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_median_k3 = Imgdata_alloc(img->width, img->height, img->channel);
     median_filter(img, img_median_k3, 3, 3);
     Imgdata_write_png(img_median_k3, "./010_median_k3.png");
 
-    Imgdata *img_median_k7 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
+    Imgdata *img_median_k7 = Imgdata_alloc(img->width, img->height, img->channel);
     median_filter(img, img_median_k7, 7, 7);
     Imgdata_write_png(img_median_k7, "./010_median_k7.png");
 

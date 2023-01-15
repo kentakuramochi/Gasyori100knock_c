@@ -121,11 +121,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     rgb2gray(img, gray);
 
-    Imgdata *img_sobel_x_k3 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
-    Imgdata *img_sobel_y_k3 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *img_sobel_x_k3 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
+    Imgdata *img_sobel_y_k3 = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
 
     sobel_filter(gray, img_sobel_x_k3, 3, 3, true);
     sobel_filter(gray, img_sobel_y_k3, 3, 3, false);

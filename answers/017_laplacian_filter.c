@@ -92,10 +92,10 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     rgb2gray(img, gray);
 
-    Imgdata *img_lapl = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *img_lapl = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     laplacian_filter(gray, img_lapl);
     Imgdata_write_png(img_lapl, "./017_lapl.png");
 

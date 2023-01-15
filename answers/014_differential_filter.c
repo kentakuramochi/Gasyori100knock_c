@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
 {
     Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
-    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     rgb2gray(img, gray);
 
-    Imgdata *img_diff_x = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
-    Imgdata *img_diff_y = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
+    Imgdata *img_diff_x = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
+    Imgdata *img_diff_y = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY);
     differential_filter(gray, img_diff_x, true);
     differential_filter(gray, img_diff_y, false);
 
