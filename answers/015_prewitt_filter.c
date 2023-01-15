@@ -69,7 +69,7 @@ void prewitt_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh
                     }
                 }
 
-                Imgdata_at(filtered, x, y)[c] = (val > 0) ? val : 0;
+                Imgdata_at(filtered, x, y)[c] = (val > 0) ? (val > UINT8_MAX ? 255 : val) : 0;
             }
         }
     }
