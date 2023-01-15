@@ -89,7 +89,7 @@ void emboss_filter(Imgdata *img,  Imgdata *filtered)
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
     Imgdata *gray = Imgdata_alloc(img->width, img->height, IMGDATA_NCH_GRAY, IMGDATA_DEPTH_U8);
     rgb2gray(img, gray);

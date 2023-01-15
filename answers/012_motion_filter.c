@@ -54,7 +54,7 @@ void motion_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh)
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
     Imgdata *img_motion_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
     motion_filter(img, img_motion_k5, 5, 5);

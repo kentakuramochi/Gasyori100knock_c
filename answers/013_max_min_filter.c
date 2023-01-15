@@ -61,7 +61,7 @@ void max_min_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
     Imgdata *gray = Imgdata_alloc(img->width, img->height, 1, IMGDATA_DEPTH_U8);
     rgb2gray(img, gray);

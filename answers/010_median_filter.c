@@ -61,7 +61,7 @@ void median_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int kh)
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
     Imgdata *img_median_k3 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
     median_filter(img, img_median_k3, 3, 3);

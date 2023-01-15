@@ -43,7 +43,7 @@ void smoothing_filter(Imgdata *img,  Imgdata *filtered, const int kw, const int 
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256_noise.png");
 
     Imgdata *img_smooth_k5 = Imgdata_alloc(img->width, img->height, img->channel, IMGDATA_DEPTH_U8);
     smoothing_filter(img, img_smooth_k5, 5, 5);

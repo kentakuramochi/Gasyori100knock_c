@@ -30,7 +30,7 @@ void get_histogram(Imgdata *img, int *histogram, const int num_bins)
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256_dark.png");
 
     int histogram[NUM_BINS];
 

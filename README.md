@@ -42,5 +42,24 @@ $ cmake ..
 $ cmake --build .
 ```
 
-スクリプト`./run_all_answers.sh` で全回答プログラムを一括実行する
-（出力画像は `build/output/` 以下に格納する）。
+スクリプト`./run_answers.sh`で全回答プログラムを一括でビルド・実行する
+（実行バイナリを`output/bin`、出力画像を`output/`以下に格納する）。
+
+```sh
+# @project root
+$ ./run_answers.sh
+-- Configuring done
+-- Generating done
+-- Build files have been written to: <repository>/build
+> 001_rgb_to_bgr
+Consolidate compiler generated dependencies of target imgdata
+[ 50%] Built target imgdata
+Consolidate compiler generated dependencies of target 001_rgb_to_bgr
+[100%] Built target 001_rgb_to_bgr
+> 002_grayscale
+[ 50%] Built target imgdata
+Consolidate compiler generated dependencies of target 002_grayscale
+[100%] Built target 002_grayscale
+> 003_binarization
+...
+```

@@ -17,7 +17,7 @@ void color_subtraction(Imgdata *img,  Imgdata *sub, const int threshold)
 
 int main(int argc, char *argv[])
 {
-    Imgdata *img = Imgdata_read_png(argv[1]);
+    Imgdata *img = Imgdata_read_png("./imori_256x256.png");
 
     Imgdata *img_sub4 = Imgdata_alloc(img->width, img->height, 3, IMGDATA_DEPTH_U8);
     color_subtraction(img, img_sub4, 4);
