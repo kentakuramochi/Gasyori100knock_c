@@ -10,12 +10,11 @@
 
 ## Prerequesites
 
-- CMake > 3.10.2
+- CMake (> 3.10.2)
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
     - [sourceforge](https://sourceforge.net/projects/libpng/files/)
-    - aptでのインストール: `sudo apt install libpng-dev`
-- サンプル画像
-    - [Gasyori100knock](https://github.com/yoyoyo-yo/Gasyori100knock.git) からクローン、`Gasyori100knock/`に配置
+    - `sudo apt install libpng-dev`
+- [サンプル画像](https://github.com/yoyoyo-yo/Gasyori100knock.git) からクローン、`Gasyori100knock/`に配置
 
 スクリプト`setup.sh`で上記必要物のダウンロード、インストールを行う。
 
