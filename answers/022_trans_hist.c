@@ -47,9 +47,7 @@ void transform_hist(Imgdata *img, Imgdata *trans_hist, const int mean, const int
     double scale = std / s;
     for (int i = 0; i < size; i++) {
         int trans = scale * (img->data[i] - m) + mean;
-        trans_hist->data[i] = (trans > UINT8_MAX) ? UINT8_MAX :
-                              (trans < 0) ? 0 :
-                              trans;
+        trans_hist->data[i] = Imgdata_sat_u8(trans);
     }
 }
 

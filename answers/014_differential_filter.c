@@ -56,7 +56,7 @@ void differential_filter(Imgdata *img,  Imgdata *filtered, const bool diff_x)
                     }
                 }
 
-                Imgdata_at(filtered, x, y)[c] = (val > 0) ? val : 0;
+                Imgdata_at(filtered, x, y)[c] = Imgdata_sat_u8(val);
             }
         }
     }

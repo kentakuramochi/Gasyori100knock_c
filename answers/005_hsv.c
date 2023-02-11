@@ -132,7 +132,7 @@ void get_s_as_grayscale(Imgdata *hsv, Imgdata *s)
     // get saturation as grayscale
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            Imgdata_at(s, x, y)[0] = (uint8_t)Imgdata_at(hsv, x, y)[1];
+            Imgdata_at(s, x, y)[0] = Imgdata_sat_u8(Imgdata_at(hsv, x, y)[1]);
         }
     }
 }
@@ -142,7 +142,7 @@ void get_v_as_grayscale(Imgdata *hsv, Imgdata *v)
     // get value as grayscale
     for (int y = 0; y < hsv->height; y++) {
         for (int x = 0; x < hsv->width; x++) {
-            Imgdata_at(v, x, y)[0] = (uint8_t)Imgdata_at(hsv, x, y)[2];
+            Imgdata_at(v, x, y)[0] = Imgdata_sat_u8(Imgdata_at(hsv, x, y)[2]);
         }
     }
 }

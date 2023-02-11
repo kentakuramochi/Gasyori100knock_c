@@ -6,9 +6,10 @@ void rgb2gray(Imgdata *rgb, Imgdata *gray)
 {
     for (int y = 0; y < rgb->height; y++) {
         for (int x = 0; x < rgb->width; x++) {
-            Imgdata_at(gray, x, y)[0] = 0.2126 * Imgdata_at(rgb, x, y)[0]
-                                      + 0.7152 * Imgdata_at(rgb, x, y)[1]
-                                      + 0.0722 * Imgdata_at(rgb, x, y)[2];
+            int val = 0.2126 * Imgdata_at(rgb, x, y)[0]
+                      + 0.7152 * Imgdata_at(rgb, x, y)[1]
+                      + 0.0722 * Imgdata_at(rgb, x, y)[2];
+            Imgdata_at(gray, x, y)[0] = Imgdata_sat_u8(val);
         }
     }
 }
