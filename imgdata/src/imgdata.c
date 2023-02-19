@@ -142,7 +142,7 @@ bool Imgdata_write_png(const Imgdata *img, const char *filename)
         return false;
     }
 
-    const int size = img->height * img->height * img->channel;
+    const int size = img->height * img->width * img->channel;
     for (int i = 0; i < size; i++) {
         int pixel = img->data[i];
         if ((pixel < 0) || (pixel > UINT8_MAX)) {
