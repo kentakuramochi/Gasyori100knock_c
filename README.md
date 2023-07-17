@@ -10,12 +10,33 @@
 ## Prerequesites
 
 - GCC
+- GNU Make
 - CMake (> 3.10.2)
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
-    - ソース:[sourceforge](https://sourceforge.net/projects/libpng/files/)
-    - APTでのインストール:`sudo apt install libpng-dev`
 
-スクリプト`setup.sh`で上記必要物をダウンロード、インストールする。
+### Docker container
+
+Dockerが利用できる場合、スクリプト `run_docker.sh` で動作環境のDockerコンテナを起動する
+（初回起動時にDockerイメージを作成）。
+
+```sh
+$ ./run_docker.sh
+ubuntu@f82cef023651:/workspace$
+```
+
+イメージ名は `g100knock`、コンテナ名は `g100knock_work` を設定している。
+
+```sh
+$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED             SIZE
+g100knock    latest    69c27e22fd89   About an hour ago   453MB
+...
+
+$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                      PORTS     NAMES
+f82cef023651   g100knock      "/bin/bash"              3 seconds ago   Up 3 seconds                          g100knock_work
+...
+```
 
 ## Imgdata library
 
