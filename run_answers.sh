@@ -59,7 +59,7 @@ build_and_copy_answer()
 }
 
 # output directory
-out_dir=${root_dir}/output
+out_dir=${build_dir}/output
 
 # run answer program
 run_answer()

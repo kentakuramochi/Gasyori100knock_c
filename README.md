@@ -62,7 +62,7 @@ $ cmake --build .
 ```
 
 スクリプト`./run_answers.sh`で全回答プログラムを一括でビルド・実行する
-（実行バイナリを`output/bin`、出力画像を`output/`以下に格納する）。
+（実行バイナリ、出力画像を`build/output/`以下に格納する）。
 
 ```sh
 # @project root
