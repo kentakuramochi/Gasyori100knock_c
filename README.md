@@ -40,11 +40,14 @@ f82cef023651   g100knock      "/bin/bash"              3 seconds ago   Up 3 seco
 
 ## Imgdata library
 
-CでPNG画像データを扱うための簡易的なライブラリ`imgdata`を作成する（`imgdata/`）。
+CでPNG画像データを扱うための簡易的なライブラリ`imgdata`を作成する（ソース：`imgdata/`）。
 
-`--target example` の指定でサンプル（`example/example.c`）をビルドできる。
+`--target example` の指定でサンプル（ソース：`example/example.c`）をビルドする。
 
 ```sh
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build . --target imgdata
 $ cmake --build . --target example
 ```
 
