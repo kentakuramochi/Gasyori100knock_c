@@ -10,19 +10,19 @@
 #       -> build and run answer program 1, 3, 10
 ########################################
 
+# Project root
 root_dir=$(pwd)
 
-# answers
-answers_dir=${root_dir}/answers
+# Get a list of build/run targets
+get_list() {
+    answers_dir=${root_dir}/answers
 
-# get a list of targets
-get_list()
-{
     if [ $# -eq 0 ]; then
-        # if no arguments, get all of the existing answer programs
+        # If no arguments are specified, put all of the existing answer programs to the list
         list=($(ls ${answers_dir} | grep -e '^[0-9]\{3\}_.\+' | sed 's/\.c//'))
     else
-        # if numbers are specified, search matching answer programs and append it to the list
+        # If numbers are specified, search answer programs which numbers are matched with
+        # and append them to the list
         list=()
         for n in $@; do
             idx=$(printf "%03d" ${n})
@@ -37,66 +37,73 @@ get_list()
     fi
 }
 
-# build directory
-build_dir=${root_dir}/build
+# Configure CMake build
+configure_build() {
+    build_dir=$1
 
-# configure CMake build
-configure_build()
-{
     pushd ${build_dir} > /dev/null
     cmake ..
     popd > /dev/null
 }
 
-# build answer program
-build_and_copy_answer()
-{
+# Build answer program
+build_and_copy_answer() {
+    build_dir=$1
+    target=$2
+    out_dir=$3
+
     pushd ${build_dir} > /dev/null
     cmake --build . --target $1
 
-    cp ${build_dir}/answers/$1 ${out_dir}
+    cp ${build_dir}/answers/${target} ${out_dir}
     popd > /dev/null
 }
 
-# output directory
-out_dir=${build_dir}/output
+# Run answer program
+run_answer() {
+    target=$1
+    out_dir=$2
 
-# run answer program
-run_answer()
-{
     pushd ${out_dir} > /dev/null
-    ./$1
+    ./${target}
     popd > /dev/null
 }
 
-get_list $@
+main() {
+    get_list $@
 
-configure_build
+    # Build directory
+    build_dir=${root_dir}/build
+    configure_build ${build_dir}
 
-mkdir -p ${out_dir}
+    # Output directory
+    out_dir=${build_dir}/output
+    mkdir -p ${out_dir}
 
-# input images
-image_dir=${root_dir}/Gasyori100knock/dataset/images
-# create symlink for input images
-ln -s ${image_dir}/* ${out_dir}
+    # Create symblic links to input images
+    image_dir=${root_dir}/Gasyori100knock/dataset/images
+    ln -s ${image_dir}/* ${out_dir}
 
-# run answer programs
-for answer in ${list[@]}; do
-    echo "> ${answer}"
-    build_and_copy_answer ${answer}
-    run_answer ${answer}
-done
+    # Build and run answer programs
+    for answer in ${list[@]}; do
+        echo "> ${answer}"
+        build_and_copy_answer ${build_dir} ${answer} ${out_dir}
+        run_answer ${answer} ${out_dir}
+    done
 
-# unlink input images
-for link in $(ls -l ${out_dir} | grep -e "^l" | awk '{ print $9 }'); do
-    unlink ${out_dir}/${link}
-done
+    # Unlink input images
+    for link in $(ls -l ${out_dir} | grep -e "^l" | awk '{ print $9 }'); do
+        unlink ${out_dir}/${link}
+    done
 
-# move binaries
-out_bin_dir=${out_dir}/bin
-mkdir -p ${out_bin_dir}
-for answer in ${list[@]}; do
-    mv ${out_dir}/${answer} ${out_bin_dir}
-done
+    # Move binaries
+    out_bin_dir=${out_dir}/bin
+    mkdir -p ${out_bin_dir}
+    for answer in ${list[@]}; do
+        mv ${out_dir}/${answer} ${out_bin_dir}
+    done
 
-echo "done"
+    echo "done"
+}
+
+main $@
