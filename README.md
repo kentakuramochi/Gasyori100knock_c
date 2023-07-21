@@ -89,3 +89,7 @@ Consolidate compiler generated dependencies of target 002_grayscale
 ## TODO
 
 - ビルド·実行環境の整理
+
+## License
+
+&copy; Yoshito Nagaoka All Rights Reserved.

@@ -81,7 +81,7 @@ main() {
     mkdir -p ${out_dir}
 
     # Create symblic links to input images
-    image_dir=${root_dir}/Gasyori100knock/dataset/images
+    image_dir=${root_dir}/images
     ln -s ${image_dir}/* ${out_dir}
 
     # Build and run answer programs
