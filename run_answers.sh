@@ -53,7 +53,7 @@ build_and_copy_answer() {
     out_dir=$3
 
     pushd ${build_dir} > /dev/null
-    cmake --build . --target $1
+    cmake --build . --target ${target}
 
     cp ${build_dir}/answers/${target} ${out_dir}
     popd > /dev/null
